@@ -59,14 +59,19 @@ server.get("/movies", function (req, res) {
     let movies = [];
     for (let rawMovieIndex = 0; rawMovieIndex < 10; rawMovieIndex++) {
       let rawMovie = rawMovies[rawMovieIndex];
-      let movie = {
-        movie_id: rawMovie.id,
-        title: rawMovie.title,
-        poster_image_url: `${basePosterImgUrl}${posterImgSize}${rawMovie.poster_path}`,
-        popularity_summary: `${rawMovie.popularity} out of ${rawMovie.vote_count}`
-      }
+      if (rawMovie) {
 
-      movies.push(movie);
+        let movie = {
+          movie_id: rawMovie.id,
+          title: rawMovie.title,
+          poster_image_url: `${basePosterImgUrl}${posterImgSize}${rawMovie.poster_path}`,
+          popularity_summary: `${rawMovie.popularity} out of ${rawMovie.vote_count}`
+        }
+        
+        movies.push(movie);
+      } else {
+        break; // index was invalid, so movie results have been exhausted
+      }
     }
 
     res.send({
