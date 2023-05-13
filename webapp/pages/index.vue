@@ -8,6 +8,11 @@
 export default {
   name: 'IndexPage'
 }
+
+  function getSearchResults(movies) {
+    console.log(movies);
+  }
+  
 </script>
 
 <style>

@@ -10,14 +10,21 @@
 
 <script setup>
   import { ref } from 'vue';
-  
+  const emit = defineEmits(["searched"]);
+
   const movieTitleInput = ref(null);
 
-  function searchForMovies() {
+  async function searchForMovies() {
     const title = movieTitleInput.value.value;
-    fetch(`http://localhost:8080/movies?search=${title}`).then((response) => {
-      console.log(response);
-    })
+    const response = await fetch(`http://localhost:8080/movies?search=${title}`);
+    const data = await response.json();
+    console.log(data);
+    if (response.status == 200) {
+      emit("searched", {movies: data.movies});
+      
+    } else {
+      // handle 400, 500 errors
+    }
   }
 </script>
 
