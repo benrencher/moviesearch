@@ -23,7 +23,19 @@ server.get("/movies", function (req, res) {
       throw new Error(error);
     }
 
-    let movies = response.body;
+    const rawMovies = JSON.parse(response.body).results;
+    let movies = [];
+    for (let rawMovieIndex = 0; rawMovieIndex < 10; rawMovieIndex++) {
+      let rawMovie = rawMovies[rawMovieIndex];
+      let movie = {
+        movie_id: rawMovie.id,
+        title: rawMovie.title,
+        poster_image_url: rawMovie.poster_path,
+        popularity_summary: `${rawMovie.popularity} out of ${rawMovie.vote_count}`
+      }
+
+      movies.push(movie);
+    }
 
     res.send({
       status: response.statusCode,
