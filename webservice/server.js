@@ -6,6 +6,33 @@ const request = require("request");
 const server = express();
 const port = 8080;
 
+// initial configuration
+let basePosterImgUrl = "";
+let posterImgSize = "original";
+const options = {
+  method: "GET",
+  url: "https://api.themoviedb.org/3/configuration",
+  headers: {
+    accept: "application/json",
+    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZmE4MmZkYTRmNTg1OTg4MWNkMmNlMTY0NTBjNmVlZiIsInN1YiI6IjYwMjQ2ODAxZGNmODc1MDAzZjM2ZDM4YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WpVmYWBK6ARQojbcHVKE2kijUpV7iKRLjxBz46Ki3I0'
+  }
+}
+request(options, (error, response, body) => {
+  if (error) {
+    throw new Error(error);
+  }
+  body = JSON.parse(body);
+  basePosterImgUrl = body.images.secure_base_url;
+
+  // check if w500 poster size is available
+  for (let size of body.images.poster_sizes) {
+    if (size == "w500") {
+      posterImgSize = "w500";
+      break;
+    }
+  }
+});
+
 server.get("/movies", function (req, res) {
   const includeAdult = false;
   const language = "en-US";
@@ -30,7 +57,7 @@ server.get("/movies", function (req, res) {
       let movie = {
         movie_id: rawMovie.id,
         title: rawMovie.title,
-        poster_image_url: rawMovie.poster_path,
+        poster_image_url: `${basePosterImgUrl}${posterImgSize}${rawMovie.poster_path}`,
         popularity_summary: `${rawMovie.popularity} out of ${rawMovie.vote_count}`
       }
 
