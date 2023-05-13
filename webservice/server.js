@@ -5,6 +5,7 @@ const request = require("request");
 
 const server = express();
 const port = 8080;
+const token = "eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZmE4MmZkYTRmNTg1OTg4MWNkMmNlMTY0NTBjNmVlZiIsInN1YiI6IjYwMjQ2ODAxZGNmODc1MDAzZjM2ZDM4YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WpVmYWBK6ARQojbcHVKE2kijUpV7iKRLjxBz46Ki3I0";
 
 // initial configuration
 let basePosterImgUrl = "";
@@ -14,7 +15,7 @@ const options = {
   url: "https://api.themoviedb.org/3/configuration",
   headers: {
     accept: "application/json",
-    Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZmE4MmZkYTRmNTg1OTg4MWNkMmNlMTY0NTBjNmVlZiIsInN1YiI6IjYwMjQ2ODAxZGNmODc1MDAzZjM2ZDM4YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WpVmYWBK6ARQojbcHVKE2kijUpV7iKRLjxBz46Ki3I0'
+    Authorization: `Bearer ${token}`
   }
 }
 request(options, (error, response, body) => {
@@ -42,7 +43,7 @@ server.get("/movies", function (req, res) {
     url: `https://api.themoviedb.org/3/search/movie?query=${req.query.search}&include_adult=${includeAdult}&language=${language}&region=${region}`,
     headers: {
       accept: 'application/json',
-      Authorization: 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI0ZmE4MmZkYTRmNTg1OTg4MWNkMmNlMTY0NTBjNmVlZiIsInN1YiI6IjYwMjQ2ODAxZGNmODc1MDAzZjM2ZDM4YiIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.WpVmYWBK6ARQojbcHVKE2kijUpV7iKRLjxBz46Ki3I0'
+      Authorization: `Bearer ${token}`
     }
   }
   request(options, (error, response, body) => {
