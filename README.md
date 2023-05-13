@@ -1,0 +1,1 @@
+to start the back end, open a terminal and run "node server.js"
